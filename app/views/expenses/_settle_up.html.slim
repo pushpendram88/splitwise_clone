@@ -1,0 +1,27 @@
+= form_tag update_settle_expenses_expenses_path, method: :put do
+  .modal-header
+    h5#expenseModalLabel.modal-title Settle up
+    button.btn-close aria-label="Close" data-bs-dismiss="modal" type="button"
+  .modal-body
+    .participants
+      .participant
+        = image_tag "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png", alt: "profile", class: "participant-avatar"
+        .arrow-icon
+          = image_tag asset_path("arrow_right_icon_238984.png"), alt: "profile", class: "arrow"
+        = image_tag "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png", alt: "profile", class: "participant-avatar"
+        #display_user_name.participant-labels
+      .participant-labels
+        p
+          | You &nbsp&nbsp&nbsp&nbsp&nbsp Paid
+    .select-to-settle
+      = select_tag "settle_to_id", options_for_select(@you_are_owed_user.collect{ |user, amount| user.unshift("#{user[0]} (Settle Amount: #{amount})") }), include_blank: "Select User", class: "settle-select"
+    .amount-to-pay
+      = text_field_tag 'amount', nil, placeholder: "Amount", id: 'settle-amount'
+    .date-field
+      = date_field_tag(:datetime_ida, Date.today, class: "date-picker")
+    .optional-note
+      = text_area_tag 'additional_note', nil, placeholder: "Additional Note", class: "note-textarea"
+  .modal-footer
+    .form-actions
+      = submit_tag "Save", class: 'btn btn-primary'
+      = button_tag 'Close', class: 'btn btn-secondary', type: 'button', data: { bs_dismiss: 'modal' }

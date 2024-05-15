@@ -1,0 +1,33 @@
+subTotal = <%= @expense.amount%>
+shareUserCount = <%= share_user_count = @expense.shared_expenses.count + 1%>
+sharedTax = <%= (@expense.tax / share_user_count).round(2) %>
+sharedTip = <%= (@expense.tip / share_user_count).round(2) %>
+
+html = '<%= render 'add_tax_modal' %>';
+
+$('#add-tax-modal .modal-content').html(html);
+$('.shared-tax-amount').text(sharedTax);
+$('.shared-tip-amount').text(sharedTip);
+
+calculateTotals = () => {
+  $('.total-calculation').each((index, totalRowEl) => {
+    column = totalRowEl.id;
+    total = 0;
+    $('.' + column).each((index, colEl) => { total += Number($(colEl).val() || $(colEl).text())})
+    total = total.toFixed(2);
+    $(totalRowEl).val(total);
+  })
+}
+
+calculateTax = () => {
+  target = $(event.target)
+  value = target.val();
+  perUserAmount = (Number(value) / shareUserCount).toFixed(2);
+  fieldClass = target[0].id == 'taxAmount' ? '.shared-tax-amount' : '.shared-tip-amount'
+  $(fieldClass).text(perUserAmount);
+  calculateTotals();
+}
+
+$('#add-tax-modal').on('show.bs.modal', calculateTotals);
+$('#taxAmount, #tipAmount').on('input', calculateTax);
+$('#add-tax-modal').modal('show');

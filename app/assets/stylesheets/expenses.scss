@@ -1,0 +1,76 @@
+// Place all the styles related to the expenses controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+  .settle-up-form {
+    width: 400px;
+    margin: 0 auto;
+  }
+
+  .participants {
+    align-items: center;
+    margin-left: 115px;
+  }
+
+  .participant {
+    display: flex;
+    align-items: center;
+  }
+
+  .participant-avatar {
+    width: 60px;
+    margin-right: 10px;
+  }
+
+  .arrow-icon {
+    margin-right: 10px;
+  }
+
+  .arrow {
+    width: 30px;
+  }
+
+  .participant-labels {
+    margin-left: 18px;
+    margin-top: -25px;
+  }
+
+  .select-to-settle {
+    margin-top: 20px;
+  }
+
+  .settle-select {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .amount-to-pay,
+  .date-field,
+  .optional-note {
+    margin-top: 20px;
+  }
+
+  #display_user_name{
+    margin-top: 123px;
+    margin-left: -60px;
+  }
+
+  .date-picker {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .note-textarea {
+    width: 100%;
+    height: 100px;
+  }
+
+  .form-actions {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .btn {
+    padding: 8px 20px;
+    margin-right: 10px;
+  }

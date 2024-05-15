@@ -1,0 +1,77 @@
+- shared_expenses = @expense.shared_expenses
+.modal-header
+  h5.modal-title#editModalLabel itemized expense
+  button.btn-close aria-label="Close" data-bs-dismiss="modal" type="button"
+= form_with model: @expense, local: false do |f|
+  .modal-body
+    .container-fluid
+      .row.fw-bold.flex-nowrap
+        .col-4 Item
+        .col-3.text-center $
+        .col.overflow-auto
+          .d-flex.justify-content-around
+            - shared_expenses.each_with_index do |shared_expense, i|
+              span.text-center style="font-size: 9px;" = shared_expense.share_by_user.name
+
+      -# Row for shared user amount
+      .row.flex-nowrap
+        .col-4
+          = f.text_field :description, class: 'form-control'
+        .col-3
+          = f.number_field :sub_total, class: 'form-control t-column-1', readonly: true
+        .col.overflow-auto
+          .d-flex.justify-content-around.align-items-center
+            - shared_expenses.each_with_index do |shared_expense, i|
+              span class="overflow-auto expense-amount t-column-#{i+2}" style= "width: 60px" = shared_expense.amount
+
+      -# Subtotal Row
+      .row.fw-bold.align-items-center.flex-nowrap style= "height: 50px"
+        .col-4
+          span Sub total
+        .col-3.text-center
+          span = @expense.amount
+        .col.overflow-auto
+          .d-flex.justify-content-around.align-items-center style= "height: 50px"
+            - shared_expenses.each do |shared_expense|
+              span.overflow-auto style= "width: 60px" = shared_expense.amount
+
+      -# Tax fields row
+      .row.flex-nowrap
+        .col-4.fw-bold
+          span + Tax
+        .col-3
+          = f.number_field :tax, class: 'form-control t-column-1', id: "taxAmount"
+        .col.overflow-auto
+          .d-flex.justify-content-around.align-items-center
+            - shared_expenses.each_with_index do |shared_expense, i|
+              span class="overflow-auto shared-tax-amount expense-amount t-column-#{i+2}" style= "width: 60px" 0.0
+
+      -# Tip fields row
+      .row.flex-nowrap style='margin-top: 10px;'
+        .col-4.fw-bold
+          span + Tip
+        .col-3
+          = f.number_field :tip, class: 'form-control t-column-1', id: "tipAmount"
+        .col
+          .d-flex.justify-content-around.align-items-center
+            - shared_expenses.size.times do |i|
+              span.overflow-auto class="shared-tip-amount expense-amount t-column-#{i+2}" style= "width: 60px" 0.0
+
+      -# Total fields row
+      .row.align-items-center.fw-bold.flex-nowrap style= "height: 50px"
+        .col-4
+          span Grand Total
+        .col-3.text-center
+          = f.text_field :amount, class: "form-control total-calculation border-0 fw-bold", id: "t-column-1", value: 0.0, readonly: true, style: 'background-color: white'
+        .col.overflow-auto
+          .d-flex.justify-content-around.align-items-center style= "height: 50px"
+            - @expense.shared_expenses.each_with_index do |shared_expense, i|
+              = f.hidden_field "shared_expenses_attributes[#{shared_expense.id}][id]", value: shared_expense.id
+              = f.text_field "shared_expenses_attributes[#{shared_expense.id}][amount]", class: "form-control total-calculation border-0 fw-bold", id: "t-column-#{i+2}", value: 0.0, readonly: true, style: 'background-color: white'
+  .modal-footer.justify-content-between
+    div
+      span.fw-bold Note:
+      span  Your share amount is not listed here
+    div
+      button.btn.btn-success type="submit" Submit
+      button.btn.btn-secondary aria-label="Close" data-bs-dismiss="modal" type="button" Close

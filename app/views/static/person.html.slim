@@ -1,0 +1,51 @@
+.dashboard-wrapper
+  aside.side-bar-area
+    .friends-list
+      p.friends-list-header FRIENDS
+      - @friends.each do |friend|
+        a.friend-name href="/people/#{friend.id}" = friend.name
+  .main-area
+    .top-bar
+      h1.top-bar-title Dashboard
+      .top-bar-actions
+        button.btn.btn-primary type="button" data-bs-toggle="modal" data-bs-target="#expenseModal"  Add an expense
+        = link_to settle_up_expenses_path, remote: true do
+          button.btn.btn-primary
+            = 'Settle up'
+    .container-fluid.expenses-list
+      - if @expenses.present?
+        - @expenses.each do |expense|
+          - expense.shared_expenses.each do |shared_expense|
+            - unless shared_expense.amount.zero?
+              .row.expense-item.m-0
+                .col-lg-4.item-lhs
+                  p= expense.created_at.strftime("%B %d")
+                  p.overflow-auto= expense.description
+                .col-lg-8.item-rhs.justify-content-between
+                  .row-details
+                    .you-details
+                      p you paid
+                      p= expense.amount
+                    .you-details
+                      p you lent #{shared_expense.share_by_user.name}
+                      p= shared_expense.amount
+                  = link_to 'Add Tax', edit_expense_path(expense), class: 'btn btn-primary edit_tax', remote: true if shared_expense.share_user_id == current_user.id
+      - else
+        h3 No expense present
+#expenseModal.modal.fade aria-hidden="true" aria-labelledby="expenseModalLabel" tabindex="-1"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        h5#expenseModalLabel.modal-title Add an expense
+        button.btn-close aria-label="Close" data-bs-dismiss="modal" type="button"
+      .modal-body
+         = render 'expenses/expense_form', expense: @expense
+      .modal-footer
+        = button_tag 'Close', class: 'btn btn-secondary', type: 'button', data: { bs_dismiss: 'modal' }
+
+.modal.fade#add-tax-modal tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true"
+  .modal-dialog  role="document"
+    .modal-content style="width: 130%;"
+#settle-up.modal.fade aria-hidden="true" aria-labelledby="expenseModalLabel" tabindex="-1"
+  .modal-dialog
+    .modal-content

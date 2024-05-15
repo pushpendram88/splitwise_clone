@@ -1,0 +1,24 @@
+html = `<%= render 'settle_up'%>`
+$('#settle-up .modal-content').html(html);
+
+function removeAfterMatch(inputString, match) {
+  var index = inputString.indexOf(match);
+  if (index !== -1) {
+      return inputString.substring(0, index);
+  }
+  return inputString;
+}
+
+displaySettleUpAmount = () => {
+  selectElement = event.target
+  var selectedOption = selectElement.options[selectElement.selectedIndex];
+  var selectedOptionName = selectedOption.textContent;
+  var settle_amount = selectedOptionName.replace ( /[^\d.]/g, '' );
+  document.getElementById('display_user_name').innerText = removeAfterMatch(selectedOptionName, '(Settle Amount:');
+  document.getElementById('settle-amount').value = settle_amount
+  $("#settle-amount").attr('readonly', 'readonly');
+};
+
+
+$('#settle_to_id').on('change', displaySettleUpAmount);
+$('#settle-up').modal('show')
