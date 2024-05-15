@@ -33,8 +33,4 @@
 - Send us the link of the dpeloyed application and your fork.
 
 
-## Contact us
-If you need any help regarding this assignment or want to join [Commutatus](https://www.commutatus.com/), drop us an email at work@commutatus.com
-
-
 If you want to go home(dashboard) page after visiting friends page than click on the navbar(Splitwise) text and you are in home(dashboard) page.
